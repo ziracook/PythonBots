@@ -5,6 +5,7 @@ import urllib
 import urllib.request
 import random
 import time
+import sys
 
 url = "https://squareup.com/market/tacocat4u/"
 secondsBetweenChecks = 60
@@ -28,24 +29,30 @@ def getHtmlFromUrl(webpageUrl):
     html = urlOpener.open(url).read()
     return html
 
-def compareHtml(htmlOld, htmlNew):
-    print(htmlOld)
+def htmlLengthEqual(htmlOld, htmlNew):
+    print("Old length: " + str(len(htmlOld)) + " New length: " + str(len(htmlNew)))
+    return len(htmlOld) == len(htmlNew)
+
+def htmlBytesLengthEqual(htmlOld, htmlNew):
+    print("Old bytes: " + str(sys.getsizeof(htmlOld)) + " New bytes: " + str(sys.getsizeof(htmlNew)))
+    return sys.getsizeof(htmlOld) == sys.getsizeof(htmlNew)
+
+def htmlAreEqual(htmlOld, htmlNew):
+    return htmlLengthEqual(htmlOld, htmlNew)
+
 
 def main():
     #html = urllib.request.urlopen(url).read()
     html = getHtmlFromUrl(url)
-    tempHtml = getHtmlFromUrl(url)
-    compareHtml(html, tempHtml)
     
-    '''
     while 1:
         tempHtml = getHtmlFromUrl(url)
-        if tempHtml == html:
+        if htmlAreEqual(html, tempHtml):
             print("No change")
         else:
             print ("**** THE WEBPAGE CHANGED ****")
             html = tempHtml
         time.sleep(secondsBetweenChecks)
-    '''
+
 
 main()
